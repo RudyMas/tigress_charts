@@ -14,28 +14,52 @@ class LineChart extends Chart
 
         imagefill($img, 0, 0, $white);
 
-        $maxValue = max(array_column($this->data, 'value'));
-        $scaleX = ($this->width - 100) / (count($this->data) - 1);
-        $scaleY = ($this->height - 100) / $maxValue;
+        $topPadding = 50;
+        $bottomPadding = 30;
+        $leftPadding = 50;
+        $rightPadding = 50;
 
-        // Draw line path
+        $maxValue = max(array_column($this->data, 'value'));
+        $scaleX = ($this->width - $leftPadding - $rightPadding) / (count($this->data) - 1);
+        $scaleY = ($this->height - $topPadding - $bottomPadding) / $maxValue;
+
+        // Draw Y-axis with ticks
+        if ($this->getShowYAxis()) {
+            imageline($img, $leftPadding, $topPadding, $leftPadding, $this->height - $bottomPadding, $black);
+            for ($i = 0; $i <= $this->yAxisTicks; $i++) {
+                $yVal = $i * $maxValue / $this->yAxisTicks;
+                $yPos = $this->height - $bottomPadding - ($yVal * $scaleY);
+                imageline($img, $leftPadding - 5, (int)$yPos, $leftPadding + 5, (int)$yPos, $black);
+                imagestring($img, 1, 5, (int)$yPos - 6, (string)(int)$yVal, $black);
+            }
+        }
+
+        // Draw X-axis
+        if ($this->getShowXAxis()) {
+            imageline($img, $leftPadding, $this->height - $bottomPadding, $this->width - $rightPadding, $this->height - $bottomPadding, $black);
+        }
+
+        // Draw lines between points
         for ($i = 0; $i < count($this->data) - 1; $i++) {
-            $x1 = 50 + $i * $scaleX;
-            $y1 = $this->height - 50 - ($this->data[$i]['value'] * $scaleY);
-            $x2 = 50 + ($i + 1) * $scaleX;
-            $y2 = $this->height - 50 - ($this->data[$i + 1]['value'] * $scaleY);
-            imageline($img, $x1, $y1, $x2, $y2, $lineColor);
+            $x1 = $leftPadding + $i * $scaleX;
+            $y1 = $this->height - $bottomPadding - ($this->data[$i]['value'] * $scaleY);
+            $x2 = $leftPadding + ($i + 1) * $scaleX;
+            $y2 = $this->height - $bottomPadding - ($this->data[$i + 1]['value'] * $scaleY);
+            imageline($img, (int)$x1, (int)$y1, (int)$x2, (int)$y2, $lineColor);
         }
 
         // Draw points, labels, and values
         foreach ($this->data as $i => $point) {
-            $x = 50 + $i * $scaleX;
-            $y = $this->height - 50 - ($point['value'] * $scaleY);
-            imagefilledellipse($img, $x, $y, 6, 6, $lineColor);
-            imagestring($img, 2, $x - 10, $this->height - 40, $point['label'], $black);
+            $x = $leftPadding + $i * $scaleX;
+            $y = $this->height - $bottomPadding - ($point['value'] * $scaleY);
+            imagefilledellipse($img, (int)$x, (int)$y, 6, 6, $lineColor);
+
+            if ($this->getShowXAxis() && ($i % $this->xAxisTickSpacing === 0)) {
+                imagestring($img, 2, (int)$x - 10, (int)($this->height - $bottomPadding + 5), $point['label'], $black);
+            }
 
             if ($this->getShowValues()) {
-                imagestring($img, 1, $x - 5, $y - 15, (string)$point['value'], $black);
+                imagestring($img, 1, (int)($x - 5), (int)($y - 15), (string)$point['value'], $black);
             }
         }
 

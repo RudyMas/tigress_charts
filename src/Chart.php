@@ -12,6 +12,10 @@ abstract class Chart
 
     protected bool $showLegend = false;
     protected bool $showValues = false;
+    protected bool $showXAxis = false; // Controls whether X-axis is shown
+    protected bool $showYAxis = false; // Controls whether Y-axis is shown
+    protected int $yAxisTicks = 5;     // Number of ticks on Y-axis
+    protected int $xAxisTickSpacing = 1; // Spacing between X-axis ticks (index based)
 
     public function setTitle(string $title): static
     {
@@ -50,15 +54,36 @@ abstract class Chart
         return $this;
     }
 
-    public function getShowLegend(): bool
+    public function showXAxis(bool $enabled = true): static
     {
-        return $this->showLegend;
+        $this->showXAxis = $enabled;
+        return $this;
     }
 
-    public function getShowValues(): bool
+    public function showYAxis(bool $enabled = true): static
     {
-        return $this->showValues;
+        $this->showYAxis = $enabled;
+        return $this;
     }
+
+    public function setYAxisTicks(int $ticks): static
+    {
+        $this->yAxisTicks = max(1, $ticks);
+        return $this;
+    }
+
+    public function setXAxisTickSpacing(int $spacing): static
+    {
+        $this->xAxisTickSpacing = max(1, $spacing);
+        return $this;
+    }
+
+    public function getShowLegend(): bool { return $this->showLegend; }
+    public function getYAxisTicks(): int { return $this->yAxisTicks; }
+    public function getXAxisTickSpacing(): int { return $this->xAxisTickSpacing; }
+    public function getShowValues(): bool { return $this->showValues; }
+    public function getShowXAxis(): bool { return $this->showXAxis; }
+    public function getShowYAxis(): bool { return $this->showYAxis; }
 
     abstract public function render(string $path): void;
 

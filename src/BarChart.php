@@ -16,52 +16,70 @@ class BarChart extends Chart
         $barWidth = 40;
         $spacing = 20;
         $x = 50;
+        $topPadding = 50;
+        $bottomPadding = 30;
+        $leftPadding = 50;
+        $rightPadding = 50;
         $maxValue = max(array_column($this->data, 'value'));
         $scale = ($this->height - 100) / $maxValue;
 
+        // Draw Y-axis with ticks
+        if ($this->getShowYAxis()) {
+            imageline($img, 50, $topPadding, 50, $this->height - $bottomPadding, $black);
+            for ($i = 0; $i <= $this->yAxisTicks; $i++) {
+                $yVal = $i * $maxValue / $this->yAxisTicks;
+                $yPos = $this->height - $bottomPadding - ($yVal * $scale);
+                imageline($img, $leftPadding - 5, (int)$yPos, $leftPadding + 5, (int)$yPos, $black);
+                imagestring($img, 1, 5, (int)$yPos - 6, (string)(int)$yVal, $black);
+            }
+        }
+
+        // Draw X-axis with ticks
+        if ($this->getShowXAxis()) {
+            imageline($img, $leftPadding, $this->height - $bottomPadding, $this->width - $rightPadding, $this->height - $bottomPadding, $black);
+        }
+
         $legendY = 20;
 
-        foreach ($this->data as $item) {
+        foreach ($this->data as $index => $item) {
             $label = $item['label'] ?? '';
             $value = $item['value'] ?? 0;
             $color = $item['color'] ?? null;
 
             if (!$color) {
-                $color = imagecolorallocate(
-                    $img,
-                    rand(50, 200),
-                    rand(50, 200),
-                    rand(50, 200)
-                );
-            } else {
-                $color = imagecolorallocate(
-                    $img,
-                    $color[0] ?? 0,
-                    $color[1] ?? 0,
-                    $color[2] ?? 0
-                );
+                $color = $this->data[$index]['color'] = [rand(50, 200), rand(50, 200), rand(50, 200)];
             }
+
+            $colorOutput = imagecolorallocate(
+                $img,
+                $color[0] ?? 0,
+                $color[1] ?? 0,
+                $color[2] ?? 0
+            );
 
             $barHeight = $value * $scale;
-            imagefilledrectangle($img, $x, $this->height - $barHeight - 50, $x + $barWidth, $this->height - 50, $color);
+            $barX = $x + $index * ($barWidth + $spacing);
+
+            imagefilledrectangle($img, (int)$barX, (int)($this->height - $barHeight - $bottomPadding), (int)($barX + $barWidth), (int)($this->height - $bottomPadding), $colorOutput);
 
             if ($this->getShowValues()) {
-                imagestring($img, 2, $x + 2, $this->height - $barHeight - 65, (string)$value, $black);
+                imagestring($img, 2, (int)($barX + 5), (int)($this->height - $barHeight - $bottomPadding - 15), (string)$value, $black);
             }
 
-            imagestring($img, 2, $x, $this->height - 40, $label, $black);
-            $x += $barWidth + $spacing;
+            if ($this->getShowXAxis() && ($index % $this->xAxisTickSpacing === 0)) {
+                imagestring($img, 2, (int)$barX, (int)($this->height - $bottomPadding), $label, $black);
+            }
         }
 
         if ($this->getShowLegend()) {
-            $x = $this->width - 150;
+            $xLegend = $this->width - 150;
             foreach ($this->data as $item) {
                 $label = $item['label'] ?? '';
                 $value = $item['value'] ?? 0;
                 $color = $item['color'] ?? [rand(50, 200), rand(50, 200), rand(50, 200)];
                 $col = imagecolorallocate($img, $color[0], $color[1], $color[2]);
-                imagefilledrectangle($img, $x, $legendY, $x + 10, $legendY + 10, $col);
-                imagestring($img, 2, $x + 15, $legendY, "$label ($value)", $black);
+                imagefilledrectangle($img, $xLegend, $legendY, $xLegend + 10, $legendY + 10, $col);
+                imagestring($img, 2, $xLegend + 15, $legendY, "$label ($value)", $black);
                 $legendY += 15;
             }
         }

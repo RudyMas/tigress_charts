@@ -17,7 +17,7 @@ class PieChart extends Chart
         $angleStart = 0;
         $centerX = $this->width / 2;
         $centerY = $this->height / 2;
-        $radius = min($this->width, $this->height) / 2 - 20;
+        $radius = min($this->width, $this->height) / 2 - 60; // Shrink pie to leave legend space
 
         $legendX = $this->width - 160;
         $legendY = 20;
