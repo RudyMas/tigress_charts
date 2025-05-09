@@ -2,6 +2,15 @@
 
 namespace Tigress;
 
+/**
+ * Class LineChart (PHP version 8.4)
+ *
+ * @author Rudy Mas <rudy.mas@rudymas.be>
+ * @copyright 2025, rudymas.be. (http://www.rudymas.be/)
+ * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License, version 3 (GPL-3.0)
+ * @version 2025.05.09.0
+ * @package Tigress\LineChart
+ */
 class LineChart extends Chart
 {
     public function render(string $path): void
@@ -19,7 +28,7 @@ class LineChart extends Chart
         $leftPadding = 50;
         $rightPadding = 50;
 
-        $maxValue = max(array_column($this->data, 'value'));
+        $maxValue = $this->yAxisTicks;
         $scaleX = ($this->width - $leftPadding - $rightPadding) / (count($this->data) - 1);
         $scaleY = ($this->height - $topPadding - $bottomPadding) / $maxValue;
 
@@ -27,10 +36,14 @@ class LineChart extends Chart
         if ($this->getShowYAxis()) {
             imageline($img, $leftPadding, $topPadding, $leftPadding, $this->height - $bottomPadding, $black);
             for ($i = 0; $i <= $this->yAxisTicks; $i++) {
-                $yVal = $i * $maxValue / $this->yAxisTicks;
+                if ($i % $this->yAxisTickSpacing !== 0) continue;
+                $step = $maxValue / $this->yAxisTicks;
+                $yVal = $i * $step;
                 $yPos = $this->height - $bottomPadding - ($yVal * $scaleY);
                 imageline($img, $leftPadding - 5, (int)$yPos, $leftPadding + 5, (int)$yPos, $black);
-                imagestring($img, 1, 5, (int)$yPos - 6, (string)(int)$yVal, $black);
+                $label = (string)number_format($yVal, 0, '', '');
+                $labelWidth = strlen($label) * 6;
+                imagestring($img, 1, $leftPadding - 8 - $labelWidth, (int)$yPos - 6, $label, $black);
             }
         }
 

@@ -19,7 +19,8 @@ Charts::line()
     ->showLegend()
     ->showXAxis()
     ->showYAxis()
-    ->setYAxisTicks(4)
+    ->setYAxisTicks(100)
+    ->setYAxisTickSpacing(20)
     ->setXAxisTickSpacing(1)
     ->render(__DIR__ . '/line_chart.png');
 

@@ -2,6 +2,15 @@
 
 namespace Tigress;
 
+/**
+ * Abstract Class Chart (PHP version 8.4)
+ *
+ * @author Rudy Mas <rudy.mas@rudymas.be>
+ * @copyright 2025, rudymas.be. (http://www.rudymas.be/)
+ * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License, version 3 (GPL-3.0)
+ * @version 2025.05.09.0
+ * @package Tigress\Chart
+ */
 abstract class Chart
 {
     protected string $title = '';
@@ -14,7 +23,8 @@ abstract class Chart
     protected bool $showValues = false;
     protected bool $showXAxis = false; // Controls whether X-axis is shown
     protected bool $showYAxis = false; // Controls whether Y-axis is shown
-    protected int $yAxisTicks = 5;     // Number of ticks on Y-axis
+    protected int $yAxisTicks = 100;     // Number of ticks on Y-axis
+    protected int $yAxisTickSpacing = 10;
     protected int $xAxisTickSpacing = 1; // Spacing between X-axis ticks (index based)
 
     public function setTitle(string $title): static
@@ -72,18 +82,47 @@ abstract class Chart
         return $this;
     }
 
+    public function setYAxisTickSpacing(int $spacing): static
+    {
+        $this->yAxisTickSpacing = max(1, $spacing);
+        return $this;
+    }
+
     public function setXAxisTickSpacing(int $spacing): static
     {
         $this->xAxisTickSpacing = max(1, $spacing);
         return $this;
     }
 
-    public function getShowLegend(): bool { return $this->showLegend; }
-    public function getYAxisTicks(): int { return $this->yAxisTicks; }
-    public function getXAxisTickSpacing(): int { return $this->xAxisTickSpacing; }
-    public function getShowValues(): bool { return $this->showValues; }
-    public function getShowXAxis(): bool { return $this->showXAxis; }
-    public function getShowYAxis(): bool { return $this->showYAxis; }
+    public function getShowLegend(): bool
+    {
+        return $this->showLegend;
+    }
+
+    public function getYAxisTicks(): int
+    {
+        return $this->yAxisTicks;
+    }
+
+    public function getXAxisTickSpacing(): int
+    {
+        return $this->xAxisTickSpacing;
+    }
+
+    public function getShowValues(): bool
+    {
+        return $this->showValues;
+    }
+
+    public function getShowXAxis(): bool
+    {
+        return $this->showXAxis;
+    }
+
+    public function getShowYAxis(): bool
+    {
+        return $this->showYAxis;
+    }
 
     abstract public function render(string $path): void;
 

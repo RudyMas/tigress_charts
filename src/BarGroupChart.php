@@ -2,8 +2,19 @@
 
 namespace Tigress;
 
+/**
+ * Class BarGroupChart (PHP version 8.4)
+ *
+ * @author Rudy Mas <rudy.mas@rudymas.be>
+ * @copyright 2025, rudymas.be. (http://www.rudymas.be/)
+ * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License, version 3 (GPL-3.0)
+ * @version 2025.05.09.0
+ * @package Tigress\BarGroupChart
+ */
 class BarGroupChart extends Chart
 {
+
+
     public function render(string $path): void
     {
         $img = imagecreatetruecolor($this->width, $this->height);
@@ -22,7 +33,6 @@ class BarGroupChart extends Chart
         $subBarCount = max(array_map(fn($item) => count($item['values'] ?? []), $this->data));
 
         $allValues = array_merge(...array_map(fn($item) => $item['values'], $this->data));
-        $maxDataValue = max($allValues);
         $maxValue = $this->yAxisTicks;
 
         $scale = ($this->height - $topPadding - $bottomPadding) / $maxValue;
@@ -34,6 +44,7 @@ class BarGroupChart extends Chart
         if ($this->getShowYAxis()) {
             imageline($img, $leftPadding, $topPadding, $leftPadding, $this->height - $bottomPadding, $black);
             for ($i = 0; $i <= $this->yAxisTicks; $i++) {
+                if ($i % $this->yAxisTickSpacing !== 0) continue;
                 $step = $maxValue / $this->yAxisTicks;
                 $yVal = $i * $step;
                 $yPos = $this->height - $bottomPadding - ($yVal * $scale);
@@ -60,7 +71,7 @@ class BarGroupChart extends Chart
 
             for ($i = 0; $i < count($values); $i++) {
                 if (!isset($colors[$i])) {
-                    $colors[$i] = [rand(50, 200), rand(50, 200), rand(50, 200)];
+                    $colors[$i] = $this->data[$groupIndex]['colors'][$i] = [rand(50, 200), rand(50, 200), rand(50, 200)];
                 }
 
                 $value = $values[$i];

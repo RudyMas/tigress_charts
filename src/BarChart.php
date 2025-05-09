@@ -2,6 +2,15 @@
 
 namespace Tigress;
 
+/**
+ * Class BarChart (PHP version 8.4)
+ *
+ * @author Rudy Mas <rudy.mas@rudymas.be>
+ * @copyright 2025, rudymas.be. (http://www.rudymas.be/)
+ * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License, version 3 (GPL-3.0)
+ * @version 2025.05.09.0
+ * @package Tigress\BarChart
+ */
 class BarChart extends Chart
 {
     public function render(string $path): void
@@ -29,6 +38,7 @@ class BarChart extends Chart
         if ($this->getShowYAxis()) {
             imageline($img, $leftPadding, $topPadding, $leftPadding, $this->height - $bottomPadding, $black);
             for ($i = 0; $i <= $this->yAxisTicks; $i++) {
+                if ($i % $this->yAxisTickSpacing !== 0) continue;
                 $step = $maxValue / $this->yAxisTicks;
                 $yVal = $i * $step;
                 $yPos = $this->height - $bottomPadding - ($yVal * $scale);
