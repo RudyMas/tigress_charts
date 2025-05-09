@@ -1,0 +1,9 @@
+# Auto-detect text files and ensure consistent LF endings
+* text=auto
+
+# Mark PHP files as text
+*.php text
+
+# Exclude development/test folders from export
+/examples export-ignore
+/tests export-ignore
