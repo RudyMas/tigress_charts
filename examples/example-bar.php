@@ -15,6 +15,8 @@ Charts::bar()
     ->setTitle('Monthly Revenue')
     ->setData($data)
     ->setSize(800, 400)
+    ->showValues()
+    ->showLegend()
     ->render(__DIR__ . '/bar_chart.png');
 
 echo "Bar chart generated: bar_chart.png\n";
