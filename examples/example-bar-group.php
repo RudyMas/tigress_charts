@@ -25,7 +25,7 @@ $chart
     ->showLegend()
     ->showXAxis()
     ->showYAxis()
-    ->setYAxisTicks(5)
+    ->setYAxisTicks(10)
     ->setXAxisTickSpacing(1)
     ->render(__DIR__ . '/bar_group_chart.png');
 

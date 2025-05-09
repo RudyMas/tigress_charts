@@ -19,10 +19,11 @@ class BarGroupChart extends Chart
         $rightPadding = 50;
 
         $groupCount = count($this->data);
-        $subBarCount = count($this->data[0]['values'] ?? []);
+        $subBarCount = max(array_map(fn($item) => count($item['values'] ?? []), $this->data));
 
-        $allValues = array_merge(...array_column($this->data, 'values'));
-        $maxValue = max($allValues);
+        $allValues = array_merge(...array_map(fn($item) => $item['values'], $this->data));
+        $maxDataValue = max($allValues);
+        $maxValue = $this->yAxisTicks;
 
         $scale = ($this->height - $topPadding - $bottomPadding) / $maxValue;
         $groupWidth = 40;
@@ -33,10 +34,13 @@ class BarGroupChart extends Chart
         if ($this->getShowYAxis()) {
             imageline($img, $leftPadding, $topPadding, $leftPadding, $this->height - $bottomPadding, $black);
             for ($i = 0; $i <= $this->yAxisTicks; $i++) {
-                $yVal = $i * $maxValue / $this->yAxisTicks;
+                $step = $maxValue / $this->yAxisTicks;
+                $yVal = $i * $step;
                 $yPos = $this->height - $bottomPadding - ($yVal * $scale);
                 imageline($img, $leftPadding - 5, (int)$yPos, $leftPadding + 5, (int)$yPos, $black);
-                imagestring($img, 1, 5, (int)$yPos - 6, (string)(int)$yVal, $black);
+                $label = (string)number_format($yVal, 0, '', '');
+                $labelWidth = strlen($label) * 6;
+                imagestring($img, 1, $leftPadding - 8 - $labelWidth, (int)$yPos - 6, $label, $black);
             }
         }
 
@@ -65,11 +69,12 @@ class BarGroupChart extends Chart
 
                 $barHeight = $value * $scale;
                 $barX = $x + $i * $subBarWidth;
+                $barY = $this->height - $bottomPadding - $barHeight;
 
                 imagefilledrectangle(
                     $img,
                     (int)$barX,
-                    (int)($this->height - $barHeight - $bottomPadding),
+                    (int)$barY,
                     (int)($barX + $subBarWidth - 2),
                     (int)($this->height - $bottomPadding),
                     $colorGD
@@ -80,7 +85,7 @@ class BarGroupChart extends Chart
                         $img,
                         1,
                         (int)($barX + 1),
-                        (int)($this->height - $barHeight - $bottomPadding - 12),
+                        (int)($barY - 12),
                         (string)$value,
                         $black
                     );

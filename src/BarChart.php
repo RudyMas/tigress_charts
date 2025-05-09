@@ -13,24 +13,29 @@ class BarChart extends Chart
 
         imagefill($img, 0, 0, $white);
 
-        $barWidth = 40;
-        $spacing = 20;
-        $x = 50;
         $topPadding = 50;
         $bottomPadding = 30;
         $leftPadding = 50;
         $rightPadding = 50;
-        $maxValue = max(array_column($this->data, 'value'));
-        $scale = ($this->height - 100) / $maxValue;
+
+        $barWidth = 40;
+        $spacing = 20;
+        $x = $leftPadding;
+
+        $maxValue = $this->yAxisTicks;
+        $scale = ($this->height - $topPadding - $bottomPadding) / $maxValue;
 
         // Draw Y-axis with ticks
         if ($this->getShowYAxis()) {
-            imageline($img, 50, $topPadding, 50, $this->height - $bottomPadding, $black);
+            imageline($img, $leftPadding, $topPadding, $leftPadding, $this->height - $bottomPadding, $black);
             for ($i = 0; $i <= $this->yAxisTicks; $i++) {
-                $yVal = $i * $maxValue / $this->yAxisTicks;
+                $step = $maxValue / $this->yAxisTicks;
+                $yVal = $i * $step;
                 $yPos = $this->height - $bottomPadding - ($yVal * $scale);
                 imageline($img, $leftPadding - 5, (int)$yPos, $leftPadding + 5, (int)$yPos, $black);
-                imagestring($img, 1, 5, (int)$yPos - 6, (string)(int)$yVal, $black);
+                $label = (string)number_format($yVal, 0, '', '');
+                $labelWidth = strlen($label) * 6;
+                imagestring($img, 1, $leftPadding - 8 - $labelWidth, (int)$yPos - 6, $label, $black);
             }
         }
 
@@ -43,7 +48,7 @@ class BarChart extends Chart
 
         foreach ($this->data as $index => $item) {
             $label = $item['label'] ?? '';
-            $value = $item['value'] ?? 0;
+            $value = is_array($item['value'] ?? null) ? 0 : ($item['value'] ?? 0);
             $color = $item['color'] ?? null;
 
             if (!$color) {
@@ -59,15 +64,16 @@ class BarChart extends Chart
 
             $barHeight = $value * $scale;
             $barX = $x + $index * ($barWidth + $spacing);
+            $barY = $this->height - $bottomPadding - $barHeight;
 
-            imagefilledrectangle($img, (int)$barX, (int)($this->height - $barHeight - $bottomPadding), (int)($barX + $barWidth), (int)($this->height - $bottomPadding), $colorOutput);
+            imagefilledrectangle($img, (int)$barX, (int)$barY, (int)($barX + $barWidth), (int)($this->height - $bottomPadding), $colorOutput);
 
             if ($this->getShowValues()) {
-                imagestring($img, 2, (int)($barX + 5), (int)($this->height - $barHeight - $bottomPadding - 15), (string)$value, $black);
+                imagestring($img, 2, (int)($barX + 2), (int)($barY - 15), (string)$value, $black);
             }
 
             if ($this->getShowXAxis() && ($index % $this->xAxisTickSpacing === 0)) {
-                imagestring($img, 2, (int)$barX, (int)($this->height - $bottomPadding), $label, $black);
+                imagestring($img, 2, (int)$barX, (int)($this->height - $bottomPadding + 5), $label, $black);
             }
         }
 
@@ -75,7 +81,7 @@ class BarChart extends Chart
             $xLegend = $this->width - 150;
             foreach ($this->data as $item) {
                 $label = $item['label'] ?? '';
-                $value = $item['value'] ?? 0;
+                $value = is_array($item['value'] ?? null) ? 0 : ($item['value'] ?? 0);
                 $color = $item['color'] ?? [rand(50, 200), rand(50, 200), rand(50, 200)];
                 $col = imagecolorallocate($img, $color[0], $color[1], $color[2]);
                 imagefilledrectangle($img, $xLegend, $legendY, $xLegend + 10, $legendY + 10, $col);

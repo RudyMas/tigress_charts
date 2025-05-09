@@ -19,7 +19,7 @@ Charts::bar()
     ->showLegend()
     ->showXAxis()
     ->showYAxis()
-    ->setYAxisTicks(5)
+    ->setYAxisTicks(150)
     ->setXAxisTickSpacing(1)
     ->render(__DIR__ . '/bar_chart.png');
 
