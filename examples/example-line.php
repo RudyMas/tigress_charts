@@ -17,6 +17,10 @@ Charts::line()
     ->setSize(800, 400)
     ->showValues()
     ->showLegend()
+    ->showXAxis()
+    ->showYAxis()
+    ->setYAxisTicks(4)
+    ->setXAxisTickSpacing(1)
     ->render(__DIR__ . '/line_chart.png');
 
 echo "Line chart generated: line_chart.png\n";
