@@ -3,7 +3,6 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Tigress\Charts;
-use Tigress\BarGroupChart;
 
 $data = [
     ['label' => 'Score 1', 'values' => [5, 6, 7, 9]],
@@ -16,8 +15,7 @@ $data = [
     ['label' => 'Score 8', 'values' => [6, 7, 8]],
 ];
 
-$chart = new BarGroupChart();
-$chart
+Charts::barGroup()
     ->setTitle('Grouped Bar Chart - Questionnaire')
     ->setData($data)
     ->setSize(800, 400)
