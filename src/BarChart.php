@@ -54,8 +54,6 @@ class BarChart extends Chart
             imageline($img, $leftPadding, $this->height - $bottomPadding, $this->width - $rightPadding, $this->height - $bottomPadding, $black);
         }
 
-        $legendY = 20;
-
         foreach ($this->data as $index => $item) {
             $label = $item['label'] ?? '';
             $value = is_array($item['value'] ?? null) ? 0 : ($item['value'] ?? 0);
@@ -88,15 +86,16 @@ class BarChart extends Chart
         }
 
         if ($this->getShowLegend()) {
-            $xLegend = $this->width - 150;
+            $xLegend = $this->width - $this->getLegendX();
+            $yLegend = $this->getLegendY();
             foreach ($this->data as $item) {
                 $label = $item['label'] ?? '';
                 $value = is_array($item['value'] ?? null) ? 0 : ($item['value'] ?? 0);
                 $color = $item['color'] ?? [rand(50, 200), rand(50, 200), rand(50, 200)];
                 $col = imagecolorallocate($img, $color[0], $color[1], $color[2]);
-                imagefilledrectangle($img, $xLegend, $legendY, $xLegend + 10, $legendY + 10, $col);
-                imagestring($img, 2, $xLegend + 15, $legendY, "$label ($value)", $black);
-                $legendY += 15;
+                imagefilledrectangle($img, $xLegend, $yLegend, $xLegend + 10, $yLegend + 10, $col);
+                imagestring($img, 2, $xLegend + 15, $yLegend, "$label ($value)", $black);
+                $yLegend += 15;
             }
         }
 

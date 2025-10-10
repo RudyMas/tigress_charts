@@ -25,7 +25,7 @@ class BarGroupChart extends Chart
         imagefill($img, 0, 0, $white);
 
         $topPadding = 50;
-        $bottomPadding = 30;
+        $bottomPadding = $this->getBottomPadding();
         $leftPadding = 50;
         $rightPadding = 50;
 
@@ -61,13 +61,13 @@ class BarGroupChart extends Chart
         }
 
         // Draw grouped bars
-        $legendY = 20;
         $x = $leftPadding;
         $colors = [];
 
         foreach ($this->data as $groupIndex => $item) {
             $label = $item['label'] ?? '';
             $values = $item['values'] ?? [];
+            $colors = $item['colors'] ?? [];
 
             for ($i = 0; $i < count($values); $i++) {
                 if (!isset($colors[$i])) {
@@ -104,8 +104,26 @@ class BarGroupChart extends Chart
             }
 
             if ($this->getShowXAxis()) {
-                $labelX = $x + ($groupWidth / 2) - (strlen($label) * 3);
-                imagestring($img, 2, (int)$labelX, (int)($this->height - $bottomPadding + 5), $label, $black);
+                $fontFile = SYSTEM_ROOT . '/vendor/tigress/charts/fonts/arial.ttf'; // pad naar TTF-bestand
+                $fontSize = 10;
+
+                // Tekstrotatie: 90° = verticaal
+                $angle = -45;
+
+                // Positie van de tekst (ongeveer gecentreerd onder de groep)
+                $labelX = $x + ($groupWidth / 2) - 5;
+                $labelY = $this->height - $bottomPadding + 20;
+
+                imagettftext(
+                    $img,
+                    $fontSize,
+                    $angle,
+                    (int)$labelX,
+                    (int)$labelY,
+                    $black,
+                    $fontFile,
+                    $label
+                );
             }
 
             $x += $groupWidth + $groupSpacing;
@@ -113,11 +131,14 @@ class BarGroupChart extends Chart
 
         // Draw legend
         if ($this->getShowLegend()) {
+            $yLegend = $this->getLegendY();
+            $xLegend = $this->getLegendX();
             foreach ($colors as $i => $rgb) {
+                $number = $i + 1;
                 $legendColor = imagecolorallocate($img, $rgb[0], $rgb[1], $rgb[2]);
-                imagefilledrectangle($img, $this->width - 150, $legendY, $this->width - 140, $legendY + 10, $legendColor);
-                imagestring($img, 2, $this->width - 135, $legendY, "Set " . ($i + 1), $black);
-                $legendY += 15;
+                imagefilledrectangle($img, $this->width - $xLegend, $yLegend, $this->width - $xLegend + 10, $yLegend + 10, $legendColor);
+                imagestring($img, 2, $this->width - $xLegend + 15, $yLegend - 1, "{$this->legendLabel} {$number}", $black);
+                $yLegend += 15;
             }
         }
 

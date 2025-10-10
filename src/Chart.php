@@ -8,7 +8,7 @@ namespace Tigress;
  * @author Rudy Mas <rudy.mas@rudymas.be>
  * @copyright 2025, rudymas.be. (http://www.rudymas.be/)
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License, version 3 (GPL-3.0)
- * @version 2025.05.09.0
+ * @version 2025.10.10.0
  * @package Tigress\Chart
  */
 abstract class Chart
@@ -18,6 +18,11 @@ abstract class Chart
 
     protected int $width = 600;
     protected int $height = 400;
+    protected int $bottomPadding = 30;
+
+    protected int $legendX = 150;
+    protected int $legendY = 20;
+    protected string $legendLabel = 'Set';
 
     protected bool $showLegend = false;
     protected bool $showValues = false;
@@ -132,5 +137,49 @@ abstract class Chart
         $this->render('php://output');
         $imageData = ob_get_clean();
         return 'data:image/png;base64,' . base64_encode($imageData);
+    }
+
+    public function getLegendX(): int
+    {
+        return $this->legendX;
+    }
+
+    public function setLegendX(int $legendX): static
+    {
+        $this->legendX = $legendX;
+        return $this;
+    }
+
+    public function getLegendY(): int
+    {
+        return $this->legendY;
+    }
+
+    public function setLegendY(int $legendY): static
+    {
+        $this->legendY = $legendY;
+        return $this;
+    }
+
+    public function getLegendLabel(): string
+    {
+        return $this->legendLabel;
+    }
+
+    public function setLegendLabel(string $legendLabel): static
+    {
+        $this->legendLabel = $legendLabel;
+        return $this;
+    }
+
+    public function getBottomPadding(): int
+    {
+        return $this->bottomPadding;
+    }
+
+    public function setBottomPadding(int $bottomPadding): static
+    {
+        $this->bottomPadding = $bottomPadding;
+        return $this;
     }
 }
