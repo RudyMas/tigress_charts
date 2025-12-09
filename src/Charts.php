@@ -3,12 +3,12 @@
 namespace Tigress;
 
 /**
- * Class Charts (PHP version 8.4)
+ * Class Charts (PHP version 8.5)
  *
  * @author Rudy Mas <rudy.mas@rudymas.be>
  * @copyright 2025, rudymas.be. (http://www.rudymas.be/)
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License, version 3 (GPL-3.0)
- * @version 2025.10.10.0
+ * @version 2025.12.09.0
  * @package Tigress\Charts
  */
 class Charts
@@ -20,7 +20,7 @@ class Charts
      */
     public static function version(): string
     {
-        return '2025.10.10';
+        return '2025.12.09';
     }
 
     public static function bar(): BarChart

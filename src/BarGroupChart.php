@@ -3,18 +3,16 @@
 namespace Tigress;
 
 /**
- * Class BarGroupChart (PHP version 8.4)
+ * Class BarGroupChart (PHP version 8.5)
  *
  * @author Rudy Mas <rudy.mas@rudymas.be>
  * @copyright 2025, rudymas.be. (http://www.rudymas.be/)
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License, version 3 (GPL-3.0)
- * @version 2025.05.09.0
+ * @version 2025.12.09.0
  * @package Tigress\BarGroupChart
  */
 class BarGroupChart extends Chart
 {
-
-
     public function render(string $path): void
     {
         $img = imagecreatetruecolor($this->width, $this->height);
@@ -145,6 +143,5 @@ class BarGroupChart extends Chart
         imagestring($img, 5, 10, 10, $this->title, $black);
 
         imagepng($img, $path);
-        imagedestroy($img);
     }
 }
