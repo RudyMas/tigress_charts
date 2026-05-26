@@ -139,19 +139,7 @@ Groups of sub-bars clustered together. Useful for comparing multiple series side
 ]
 ```
 
-**Important — `SYSTEM_ROOT` constant:** On line 105 of `BarGroupChart.php`, the font path is resolved as:
-
-```php
-$fontFile = SYSTEM_ROOT . '/vendor/tigress/charts/fonts/arial.ttf';
-```
-
-The constant `SYSTEM_ROOT` is **not defined by this library**. Your application must define it (e.g., as the absolute path to your project root) before calling `render()`, otherwise the X-axis labels will fail with a "font file not found" error from GD.
-
-```php
-define('SYSTEM_ROOT', __DIR__);  // or wherever your composer.json lives
-```
-
-**X-axis labels** are rendered with TrueType (`imagettftext`) at a -45 degree angle using `fonts/arial.ttf`.
+**X-axis labels** are rendered with TrueType (`imagettftext`) at a -45 degree angle using `fonts/arial.ttf`. The font path uses the `SYSTEM_ROOT` constant (provided by Tigress Core) resolved as `SYSTEM_ROOT . '/vendor/tigress/charts/fonts/arial.ttf'`.
 
 ---
 
@@ -265,11 +253,10 @@ Returns the library version string `'2025.12.09'`.
 
 | Issue | Details |
 |---|---|
-| **`SYSTEM_ROOT` not defined** | `BarGroupChart::render()` line 105 references a `SYSTEM_ROOT` constant that is not defined by this library. Your application **must** `define('SYSTEM_ROOT', ...)` before rendering a group bar chart, or the X-axis labels will fail silently (no image output, or GD font error). |
 | **Bar chart with array values** | `example-bar.php` passes `'value' => [10, 12]` for January. The `BarChart::render()` code treats array values as `0` (`is_array($item['value'] ?? null) ? 0 : ...`). This means array values silently disappear. Use `BarGroupChart` for multi-value data. |
 | **No data validation** | Beyond `setData()` rejecting empty arrays, there is no validation that data items contain the required keys (`label`, `value`/`values`). Missing keys may produce warnings or broken images. |
 | **Y-axis ticks as scale ceiling** | `yAxisTicks` serves double duty as both the tick count and the Y-axis maximum value. The highest tick value equals `yAxisTicks`, so any data value above this will be **clipped** (drawn above the visible chart area). The naming is misleading — it behaves like a max-value setting. |
-| **GD font for X-axis** | `BarChart` and `LineChart` use GD's built-in `imagestring()` (font 2) for X-axis labels. `BarGroupChart` uses TrueType via `imagettftext()`. The label rendering is inconsistent across chart types. |
+| **Bottom padding for angled labels** | The default `bottomPadding` is 30px. With the TrueType -45° angled X-axis labels, you may need to increase padding via `setBottomPadding()` to prevent label clipping. |
 | **Example scripts assume vendor installed** | All example files `require_once __DIR__ . '/../vendor/autoload.php'`. They will fail if `composer install` has not been run. |
 
 ---

@@ -23,7 +23,7 @@ class BarChart extends Chart
         imagefill($img, 0, 0, $white);
 
         $topPadding = 50;
-        $bottomPadding = 30;
+        $bottomPadding = $this->getBottomPadding();
         $leftPadding = 50;
         $rightPadding = 50;
 
@@ -81,7 +81,10 @@ class BarChart extends Chart
             }
 
             if ($this->getShowXAxis() && ($index % $this->xAxisTickSpacing === 0)) {
-                imagestring($img, 2, (int)$barX, (int)($this->height - $bottomPadding + 5), $label, $black);
+                $fontFile = SYSTEM_ROOT . '/vendor/tigress/charts/fonts/arial.ttf';
+                $labelX = (int)($barX + $barWidth / 2);
+                $labelY = $this->height - $bottomPadding + 20;
+                imagettftext($img, 10, -45, $labelX, $labelY, $black, $fontFile, $label);
             }
         }
 

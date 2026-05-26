@@ -24,7 +24,7 @@ class LineChart extends Chart
         imagefill($img, 0, 0, $white);
 
         $topPadding = 50;
-        $bottomPadding = 30;
+        $bottomPadding = $this->getBottomPadding();
         $leftPadding = 50;
         $rightPadding = 50;
 
@@ -72,7 +72,9 @@ class LineChart extends Chart
             imagefilledellipse($img, (int)$x, (int)$y, 6, 6, $pointColor);
 
             if ($this->getShowXAxis() && ($i % $this->xAxisTickSpacing === 0)) {
-                imagestring($img, 2, (int)$x - 10, (int)($this->height - $bottomPadding + 5), $point['label'], $black);
+                $fontFile = SYSTEM_ROOT . '/vendor/tigress/charts/fonts/arial.ttf';
+                $labelY = $this->height - $bottomPadding + 20;
+                imagettftext($img, 10, -45, (int)$x, $labelY, $black, $fontFile, $point['label']);
             }
 
             if ($this->getShowValues()) {
