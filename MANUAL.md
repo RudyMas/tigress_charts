@@ -200,6 +200,7 @@ All properties are inherited by all chart types from `Tigress\Chart`.
 | `setYAxisTicks(int $ticks)` | `100` | Maximum value on the Y-axis (also serves as the scale ceiling). Minimum 1. |
 | `setYAxisTickSpacing(int $n)` | `10` | Show a tick label every N ticks on Y-axis. Minimum 1. |
 | `setXAxisTickSpacing(int $n)` | `1` | Show an X-axis label every N data points. Minimum 1. |
+| `setXAxisLabelAngle(int $deg)` | `-45` | Rotation angle for X-axis labels (TrueType). Use `0` for horizontal. |
 | `setLegendX(int $x)` | `150` | Legend horizontal offset (distance from right edge) |
 | `setLegendY(int $y)` | `20` | Legend vertical offset (distance from top) |
 | `setLegendLabel(string $label)` | `'Set'` | Legend prefix label (used by BarGroupChart as "Set 1", "Set 2", ...) |

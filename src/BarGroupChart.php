@@ -105,17 +105,13 @@ class BarGroupChart extends Chart
                 $fontFile = SYSTEM_ROOT . '/vendor/tigress/charts/fonts/arial.ttf'; // pad naar TTF-bestand
                 $fontSize = 10;
 
-                // Tekstrotatie: 90° = verticaal
-                $angle = -45;
-
-                // Positie van de tekst (ongeveer gecentreerd onder de groep)
                 $labelX = $x + ($groupWidth / 2) - 5;
                 $labelY = $this->height - $bottomPadding + 20;
 
                 imagettftext(
                     $img,
                     $fontSize,
-                    $angle,
+                    $this->getXAxisLabelAngle(),
                     (int)$labelX,
                     (int)$labelY,
                     $black,

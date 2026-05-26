@@ -74,7 +74,7 @@ class LineChart extends Chart
             if ($this->getShowXAxis() && ($i % $this->xAxisTickSpacing === 0)) {
                 $fontFile = SYSTEM_ROOT . '/vendor/tigress/charts/fonts/arial.ttf';
                 $labelY = $this->height - $bottomPadding + 20;
-                imagettftext($img, 10, -45, (int)$x, $labelY, $black, $fontFile, $point['label']);
+                imagettftext($img, 10, $this->getXAxisLabelAngle(), (int)$x, $labelY, $black, $fontFile, $point['label']);
             }
 
             if ($this->getShowValues()) {

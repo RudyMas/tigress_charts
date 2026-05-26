@@ -84,7 +84,7 @@ class BarChart extends Chart
                 $fontFile = SYSTEM_ROOT . '/vendor/tigress/charts/fonts/arial.ttf';
                 $labelX = (int)($barX + $barWidth / 2);
                 $labelY = $this->height - $bottomPadding + 20;
-                imagettftext($img, 10, -45, $labelX, $labelY, $black, $fontFile, $label);
+                imagettftext($img, 10, $this->getXAxisLabelAngle(), $labelX, $labelY, $black, $fontFile, $label);
             }
         }
 

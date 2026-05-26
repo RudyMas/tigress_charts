@@ -31,6 +31,7 @@ abstract class Chart
     protected int $yAxisTicks = 100;     // Number of ticks on Y-axis
     protected int $yAxisTickSpacing = 10;
     protected int $xAxisTickSpacing = 1; // Spacing between X-axis ticks (index based)
+    protected int $xAxisLabelAngle = -45; // Angle for X-axis labels (TrueType)
 
     public function setTitle(string $title): static
     {
@@ -180,6 +181,17 @@ abstract class Chart
     public function setBottomPadding(int $bottomPadding): static
     {
         $this->bottomPadding = $bottomPadding;
+        return $this;
+    }
+
+    public function getXAxisLabelAngle(): int
+    {
+        return $this->xAxisLabelAngle;
+    }
+
+    public function setXAxisLabelAngle(int $xAxisLabelAngle): static
+    {
+        $this->xAxisLabelAngle = $xAxisLabelAngle;
         return $this;
     }
 }
