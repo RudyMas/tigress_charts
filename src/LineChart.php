@@ -19,7 +19,7 @@ class LineChart extends Chart
 
         $white = imagecolorallocate($img, 255, 255, 255);
         $black = imagecolorallocate($img, 0, 0, 0);
-        $lineColor = imagecolorallocate($img, 0, 123, 255);
+        $defaultColor = [0, 123, 255];
 
         imagefill($img, 0, 0, $white);
 
@@ -54,18 +54,22 @@ class LineChart extends Chart
 
         // Draw lines between points
         for ($i = 0; $i < count($this->data) - 1; $i++) {
+            $colorFrom = $this->data[$i]['color'] ?? $defaultColor;
+            $colorSeg = imagecolorallocate($img, $colorFrom[0], $colorFrom[1], $colorFrom[2]);
             $x1 = $leftPadding + $i * $scaleX;
             $y1 = $this->height - $bottomPadding - ($this->data[$i]['value'] * $scaleY);
             $x2 = $leftPadding + ($i + 1) * $scaleX;
             $y2 = $this->height - $bottomPadding - ($this->data[$i + 1]['value'] * $scaleY);
-            imageline($img, (int)$x1, (int)$y1, (int)$x2, (int)$y2, $lineColor);
+            imageline($img, (int)$x1, (int)$y1, (int)$x2, (int)$y2, $colorSeg);
         }
 
         // Draw points, labels, and values
         foreach ($this->data as $i => $point) {
+            $colorArr = $point['color'] ?? $defaultColor;
+            $pointColor = imagecolorallocate($img, $colorArr[0], $colorArr[1], $colorArr[2]);
             $x = $leftPadding + $i * $scaleX;
             $y = $this->height - $bottomPadding - ($point['value'] * $scaleY);
-            imagefilledellipse($img, (int)$x, (int)$y, 6, 6, $lineColor);
+            imagefilledellipse($img, (int)$x, (int)$y, 6, 6, $pointColor);
 
             if ($this->getShowXAxis() && ($i % $this->xAxisTickSpacing === 0)) {
                 imagestring($img, 2, (int)$x - 10, (int)($this->height - $bottomPadding + 5), $point['label'], $black);
@@ -80,7 +84,8 @@ class LineChart extends Chart
         if ($this->getShowLegend()) {
             $legendX = $this->width - 150;
             $legendY = 20;
-            $legendColor = imagecolorallocate($img, 0, 123, 255);
+            $legendColorArr = $this->data[0]['color'] ?? $defaultColor;
+            $legendColor = imagecolorallocate($img, $legendColorArr[0], $legendColorArr[1], $legendColorArr[2]);
             imagefilledrectangle($img, $legendX, $legendY, $legendX + 10, $legendY + 10, $legendColor);
             imagestring($img, 2, $legendX + 15, $legendY, $this->title, $black);
         }
