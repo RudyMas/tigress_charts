@@ -1,38 +1,13 @@
 # Tigress Charts
 
-A lightweight PHP library to generate simple GD-based chart images (starting with bar charts). Built to be integrated into the Tigress Framework or used standalone.
+A lightweight PHP library to generate simple GD-based chart images. Built to be integrated into the Tigress Framework or used standalone.
 
 ## Features
-- 🟦 Bar charts with automatic or custom coloring
+- 📊 Bar chart with automatic or custom coloring
+- 📊 Grouped (clustered) bar chart with multi-value data
+- 📈 Line chart with configurable per-point colors
+- 🥧 Pie chart with percentage labels
 - 📐 Adjustable width & height
-- 🖼️ Output as PNG image
-
-## Installation
-```bash
-composer require tigress/charts
-```
-
-## Usage
-```php
-use Tigress\Charts;
-
-$data = [
-    ['label' => 'Jan', 'value' => 120],
-    ['label' => 'Feb', 'value' => 80, 'color' => [255, 0, 0]],
-    ['label' => 'Mar', 'value' => 150],
-];
-
-Charts::bar()
-    ->setTitle('Monthly Sales')
-    ->setData($data)
-    ->setSize(800, 400)
-    ->render(__DIR__ . '/chart.png');
-```
-
-## Roadmap
-- [x] Bar chart
-- [ ] Line chart
-- [ ] Pie chart
-
-## License
-GPL-3.0-or-later
+- 🔄 Configurable X-axis label angle (default -45°)
+- 📍 Toggle axes, value labels, and legend
+- 🖼️ Output as PNG file or base64 data URI
