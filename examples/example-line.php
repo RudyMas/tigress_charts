@@ -1,4 +1,7 @@
 <?php
+/**
+ * This file can only be run inside the Tigress Framework
+ */
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -22,6 +25,7 @@ Charts::line()
     ->setYAxisTicks(100)
     ->setYAxisTickSpacing(20)
     ->setXAxisTickSpacing(1)
+    ->setBottomPadding(75)
     ->render(__DIR__ . '/line_chart.png');
 
 echo "Line chart generated: line_chart.png\n";
