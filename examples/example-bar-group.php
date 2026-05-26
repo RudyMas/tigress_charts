@@ -26,6 +26,7 @@ Charts::barGroup()
     ->setYAxisTicks(10)
     ->setYAxisTickSpacing(2)
     ->setXAxisTickSpacing(1)
+    ->setBottomPadding(75)
     ->render(__DIR__ . '/bar_group_chart.png');
 
 echo "Grouped bar chart generated: bar_group_chart.png\n";
