@@ -8,7 +8,7 @@ namespace Tigress;
  * @author Rudy Mas <rudy.mas@rudymas.be>
  * @copyright 2025, rudymas.be. (http://www.rudymas.be/)
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License, version 3 (GPL-3.0)
- * @version 2025.12.09.0
+ * @version 2026.05.26.0
  * @package Tigress\Charts
  */
 class Charts
@@ -20,7 +20,7 @@ class Charts
      */
     public static function version(): string
     {
-        return '2025.12.09';
+        return '2026.05.26';
     }
 
     public static function bar(): BarChart

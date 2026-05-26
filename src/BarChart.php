@@ -6,9 +6,9 @@ namespace Tigress;
  * Class BarChart (PHP version 8.5)
  *
  * @author Rudy Mas <rudy.mas@rudymas.be>
- * @copyright 2025, rudymas.be. (http://www.rudymas.be/)
+ * @copyright 2025-2026, rudymas.be. (http://www.rudymas.be/)
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License, version 3 (GPL-3.0)
- * @version 2025.12.09.0
+ * @version 2026.05.26.0
  * @package Tigress\BarChart
  */
 class BarChart extends Chart
