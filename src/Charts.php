@@ -7,7 +7,7 @@ namespace Tigress;
  *
  * @author Rudy Mas <rudy.mas@rudymas.be>
  * @copyright 2025, rudymas.be. (http://www.rudymas.be/)
- * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License, version 3 (GPL-3.0)
+ * @license https://opensource.org/licenses/Apache-2.0 Apache License, Version 2.0
  * @version 2026.05.26.0
  * @package Tigress\Charts
  */

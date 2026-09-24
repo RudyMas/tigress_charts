@@ -2,7 +2,7 @@
 
 **Version:** 2025.12.09  
 **Author:** Rudy Mas  
-**License:** GPL-3.0-or-later  
+**License:** Apache 2.0 
 **Requirements:** PHP >= 8.5, ext-gd
 
 ---
